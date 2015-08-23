@@ -236,7 +236,7 @@
         responsesParamString = responsesParamString + dataKinds[i] + "=" + currentData[i] + "&"
       }
 
-      queryUrl = getBaseURL() + "?" + responsesParamString + 'surveyLabel' + "=" + new Date().toISOString()
+      queryUrl = getBaseURL() + "/catalyst?" + responsesParamString + 'surveyLabel' + "=" + new Date().toISOString()
 
       alert(queryUrl);
     };
