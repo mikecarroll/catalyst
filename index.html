@@ -317,11 +317,13 @@
       var formattedScore = "";
 
       for (var i = 0; i < dataKinds.length; i++) {
-        formattedScore = formattedScore + dataLabels[i] + ":%20" + currentData[i] + "%0D%0A"
-        responsesParamString = responsesParamString + dataKinds[i] + "=" + currentData[i] + "&"
+        formattedScore = formattedScore + dataLabels[i] + ":%20" + currentData[i] + "%0D%0A";
+        responsesParamString = responsesParamString + dataKinds[i] + "=" + currentData[i] + "%26";
       }
 
-      queryUrl = getBaseURL() + "catalyst?" + responsesParamString + 'surveyLabel' + "=" + new Date().toISOString()
+      queryUrl = getBaseURL() + "catalyst?" + responsesParamString + 'surveyLabel' + "=" + new Date().toISOString();
+
+      console.log(queryUrl);
 
       window.location.href = "mailto:dianecarroll@me.com?subject=My%20Catalyzt%20Score&body=" + formattedScore + "%0D%0A%0D%0ALink:%20" + queryUrl;
     };
