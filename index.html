@@ -7,6 +7,7 @@
       var __slice=[].slice,__indexOf=[].indexOf||function(e){for(var t=0,n=this.length;t<n;t++)if(t in this&&this[t]===e)return t;return-1};(function(e,t){var n;return n=function(){function t(t,n){var r,i=this;this.input=t,this.defaultOptions={animate:!0,snapMid:!1,classPrefix:null,classSuffix:null,theme:null,highlight:!1},this.settings=e.extend({},this.defaultOptions,n),this.settings.theme&&(this.settings.classSuffix="-"+this.settings.theme),this.input.hide(),this.slider=e("<div>").addClass("slider"+(this.settings.classSuffix||"")).css({position:"relative",userSelect:"none",boxSizing:"border-box"}).insertBefore(this.input),this.input.attr("id")&&this.slider.attr("id",this.input.attr("id")+"-slider"),this.track=this.createDivElement("track").css({width:"100%"}),this.settings.highlight&&(this.highlightTrack=this.createDivElement("highlight-track").css({width:"0"})),this.dragger=this.createDivElement("dragger"),this.slider.css({minHeight:this.dragger.outerHeight(),marginLeft:this.dragger.outerWidth()/2,marginRight:this.dragger.outerWidth()/2}),this.track.css({marginTop:this.track.outerHeight()/-2}),this.settings.highlight&&this.highlightTrack.css({marginTop:this.track.outerHeight()/-2}),this.dragger.css({marginTop:this.dragger.outerHeight()/-2,marginLeft:this.dragger.outerWidth()/-2}),this.track.mousedown(function(e){return i.trackEvent(e)}),this.settings.highlight&&this.highlightTrack.mousedown(function(e){return i.trackEvent(e)}),this.dragger.mousedown(function(e){if(e.which!==1)return;return i.dragging=!0,i.dragger.addClass("dragging"),i.domDrag(e.pageX,e.pageY),!1}),e("body").mousemove(function(t){if(i.dragging)return i.domDrag(t.pageX,t.pageY),e("body").css({cursor:"pointer"})}).mouseup(function(t){if(i.dragging)return i.dragging=!1,i.dragger.removeClass("dragging"),e("body").css({cursor:"auto"})}),this.pagePos=0,this.input.val()===""?(this.value=this.getRange().min,this.input.val(this.value)):this.value=this.nearestValidValue(this.input.val()),this.setSliderPositionFromValue(this.value),r=this.valueToRatio(this.value),this.input.trigger("slider:ready",{value:this.value,ratio:r,position:r*this.slider.outerWidth(),el:this.slider})}return t.prototype.createDivElement=function(t){var n;return n=e("<div>").addClass(t).css({position:"absolute",top:"50%",userSelect:"none",cursor:"pointer"}).appendTo(this.slider),n},t.prototype.setRatio=function(e){var t;return e=Math.min(1,e),e=Math.max(0,e),t=this.ratioToValue(e),this.setSliderPositionFromValue(t),this.valueChanged(t,e,"setRatio")},t.prototype.setValue=function(e){var t;return e=this.nearestValidValue(e),t=this.valueToRatio(e),this.setSliderPositionFromValue(e),this.valueChanged(e,t,"setValue")},t.prototype.trackEvent=function(e){if(e.which!==1)return;return this.domDrag(e.pageX,e.pageY,!0),this.dragging=!0,!1},t.prototype.domDrag=function(e,t,n){var r,i,s;n==null&&(n=!1),r=e-this.slider.offset().left,r=Math.min(this.slider.outerWidth(),r),r=Math.max(0,r);if(this.pagePos!==r)return this.pagePos=r,i=r/this.slider.outerWidth(),s=this.ratioToValue(i),this.valueChanged(s,i,"domDrag"),this.settings.snap?this.setSliderPositionFromValue(s,n):this.setSliderPosition(r,n)},t.prototype.setSliderPosition=function(e,t){t==null&&(t=!1);if(t&&this.settings.animate){this.dragger.animate({left:e},200);if(this.settings.highlight)return this.highlightTrack.animate({width:e},200)}else{this.dragger.css({left:e});if(this.settings.highlight)return this.highlightTrack.css({width:e})}},t.prototype.setSliderPositionFromValue=function(e,t){var n;return t==null&&(t=!1),n=this.valueToRatio(e),this.setSliderPosition(n*this.slider.outerWidth(),t)},t.prototype.getRange=function(){return this.settings.allowedValues?{min:Math.min.apply(Math,this.settings.allowedValues),max:Math.max.apply(Math,this.settings.allowedValues)}:this.settings.range?{min:parseFloat(this.settings.range[0]),max:parseFloat(this.settings.range[1])}:{min:0,max:1}},t.prototype.nearestValidValue=function(t){var n,r,i,s;return i=this.getRange(),t=Math.min(i.max,t),t=Math.max(i.min,t),this.settings.allowedValues?(n=null,e.each(this.settings.allowedValues,function(){if(n===null||Math.abs(this-t)<Math.abs(n-t))return n=this}),n):this.settings.step?(r=(i.max-i.min)/this.settings.step,s=Math.floor((t-i.min)/this.settings.step),(t-i.min)%this.settings.step>this.settings.step/2&&s<r&&(s+=1),s*this.settings.step+i.min):t},t.prototype.valueToRatio=function(e){var t,n,r,i,s,o,u,a;if(this.settings.equalSteps){a=this.settings.allowedValues;for(i=o=0,u=a.length;o<u;i=++o){t=a[i];if(typeof n=="undefined"||n===null||Math.abs(t-e)<Math.abs(n-e))n=t,r=i}return this.settings.snapMid?(r+.5)/this.settings.allowedValues.length:r/(this.settings.allowedValues.length-1)}return s=this.getRange(),(e-s.min)/(s.max-s.min)},t.prototype.ratioToValue=function(e){var t,n,r,i,s;return this.settings.equalSteps?(s=this.settings.allowedValues.length,i=Math.round(e*s-.5),t=Math.min(i,this.settings.allowedValues.length-1),this.settings.allowedValues[t]):(n=this.getRange(),r=e*(n.max-n.min)+n.min,this.nearestValidValue(r))},t.prototype.valueChanged=function(t,n,r){var i;if(t.toString()===this.value.toString())return;return this.value=t,i={value:t,ratio:n,position:n*this.slider.outerWidth(),trigger:r,el:this.slider},this.input.val(t).trigger(e.Event("change",i)).trigger("slider:changed",i)},t}(),e.extend(e.fn,{simpleSlider:function(){var t,r,i;return i=arguments[0],t=2<=arguments.length?__slice.call(arguments,1):[],r=["setRatio","setValue"],e(this).each(function(){var s,o;return i&&__indexOf.call(r,i)>=0?(s=e(this).data("slider-object"),s[i].apply(s,t)):(o=i,e(this).data("slider-object",new n(e(this),o)))})}}),e(function(){return e("[data-slider]").each(function(){var t,n,r,i;return t=e(this),r={},n=t.data("slider-values"),n&&(r.allowedValues=function(){var e,t,r,s;r=n.split(","),s=[];for(e=0,t=r.length;e<t;e++)i=r[e],s.push(parseFloat(i));return s}()),t.data("slider-range")&&(r.range=t.data("slider-range").split(",")),t.data("slider-step")&&(r.step=t.data("slider-step")),r.snap=t.data("slider-snap"),r.equalSteps=t.data("slider-equal-steps"),t.data("slider-theme")&&(r.theme=t.data("slider-theme")),t.attr("data-slider-highlight")&&(r.highlight=t.data("slider-highlight")),t.data("slider-animate")!=null&&(r.animate=t.data("slider-animate")),t.simpleSlider(r)})})})(this.jQuery||this.Zepto,this);
     </script>
 
+    <link rel="stylesheet" href="http://cdn.foundation5.zurb.com/foundation.css" />
     <style>
       .breakdown-graphs{
         position:relative;
@@ -32,6 +33,12 @@
         margin:0 auto;
         position:absolute;
         z-index:100;
+      }
+
+      .rating {
+        font-weight: 10px;
+        color: rgba(18,15,85,1);
+        padding-left: 10px;
       }
 
       .slider {
@@ -100,31 +107,105 @@
   <div>
 
   <form id="maverick" name="maverick">
-    <label>Mate</label>
-    <input id="Mate" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Mate"/>
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round radius" title="Development of a YOU centered plan, to preserve who you are at the core and advance to the person you wish to be while caring for and working with others.">Personal Development</span><span id="Personal-Development-rating" class='rating'></span></label>
+    <input id="Personal-Development" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Personal Development"/>
 
-    <label>Kid 1</label>
-    <input id="Kid-1" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Kid 1"/>
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="The development of good habits and reduction of bad habits.">Habits</span><span id="Habits-rating" class='rating'></span></label>
+    <input id="Habits" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Habits"/>
 
-    <label>Kid 2</label>
-    <input id="Kid-2" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Kid 2"/>
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Developing personal character to your liking.">Character</span><span id="Character-rating" class='rating'></span></label>
+    <input id="Character" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Character"/>
 
-    <label>Parents</label>
-    <input id="Parents" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Parents"/>
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Developing yourself to face life’s challenges and adventures.">Courage</span><span id="Courage-rating" class='rating'></span></label>
+    <input id="Courage" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Courage"/>
 
-    <label>Work</label>
-    <input id="Work" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Work"/>
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Developing a self-initiated formula to move yourself forward to your liking.">Motivation</span><span id="Motivation-rating" class='rating'></span></label>
+    <input id="Motivation" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Motivation"/>
 
-    <label>Investments</label>
-    <input id="Investments" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Investments"/>
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Developing humor in your life and to your liking.">Humor</span><span id="Humor-rating" class='rating'></span></label>
+    <input id="Humor" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Humor"/>
 
-    <label>Happiness</label>
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Developing ongoing, daily fun and recreation.">Playtime</span><span id="Playtime-rating" class='rating'></span></label>
+    <input id="Playtime" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Playtime"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of more love internally, externally, or both.">Love</span><span id="Love-rating" class='rating'></span></label>
+    <input id="Love" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Love"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of personal fulfillment and overall happiness considering all categories.">Happiness</span><span id="Happiness-rating" class='rating'></span></label>
     <input id="Happiness" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Happiness"/>
 
-    <input type="button" value="Submit" onclick="processResults()"/>
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of something bigger. Contribution to the larger world.">Big Picture</span><span id="Big-Picture-rating" class='rating'></span></label>
+    <input id="Big-Picture" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Big Picture"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of space around you, including living space and geographic fits that supports what you want to be and become.">Living Environment</span><span id="Living-Environment-rating" class='rating'></span></label>
+    <input id="Living-Environment" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Living Environment"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="A plan to develop your off-spring for a better life.">Parenting/Grandparenting</span><span id="Parenting-Grandparenting-rating" class='rating'></span></label>
+    <input id="Parenting-Grandparenting" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Parenting/Grandparenting"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Developing and nurturing genuine friendships.">Friendships</span><span id="Friendships-rating" class='rating'></span></label>
+    <input id="Friendships" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Friendships"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Developing and nurturing your core family unit as a whole.">Family (Atomic)</span><span id="Family-Atomic-rating" class='rating'></span></label>
+    <input id="Family-Atomic" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Family (Atomic)"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of a success plan and progression plan based on the personality, wants, skills, and outlook of your unique child.">Kid #1</span><span id="Kid-1-rating" class='rating'></span></label>
+    <input id="Kid-1" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Kid #1"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of a success plan and progression plan based on the personality, wants, skills, and outlook of your unique child.">Kid #2</span><span id="Kid-2-rating" class='rating'></span></label>
+    <input id="Kid-2" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Kid #2"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Developing and nurturing your extended family unit. Often this is a mix of blood relatives and good friends.">Family (Extended)</span><span id="Family-Extended-rating" class='rating'></span></label>
+    <input id="Family-Extended" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Family (Extended)"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of a plan to get and/or keep a strong, growing bonded relationship.">Mate</span><span id="Mate-rating" class='rating'></span></label>
+    <input id="Mate" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Mate"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of the emotional skillset that will bring greater success at work.">Professional Growth</span><span id="Professional-Growth-rating" class='rating'></span></label>
+    <input id="Professional-Growth" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Professional Growth"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Develop a system for home or small business.">Bookkeeping/Organization</span><span id="Bookkeeping-Organization-rating" class='rating'></span></label>
+    <input id="Bookkeeping-Organization" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Bookkeeping/Organization"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of a plan for making, reserving, or sharing money.">Financial</span><span id="Financial-rating" class='rating'></span></label>
+    <input id="Financial" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Financial"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of a plan for making money on something you are planning or you’ve ALREADY done/developed.">Wealth Creation</span><span id="Wealth-Creation-rating" class='rating'></span></label>
+    <input id="Wealth-Creation" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Wealth Creation"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of either formal and informal education.">Educational</span><span id="Educational-rating" class='rating'></span></label>
+    <input id="Educational" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Educational"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of ways and thinking to manage yourself better on a daily basis.">Self-Management</span><span id="Self-Management-rating" class='rating'></span></label>
+    <input id="Self-Management" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Self-Management"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of a plan for spiritual connection and advancement.">Spiritual Growth</span><span id="Spiritual-Growth-rating" class='rating'></span></label>
+    <input id="Spiritual-Growth" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Spiritual Growth"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of a proactive or recovery plan to advance the state of your health.">Wellness/Physical Health</span><span id="Wellness-Physical-Health-rating" class='rating'></span></label>
+    <input id="Wellness-Physical-Health" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Wellness/Physical Health"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of a fulfilling life and happiness while managing inner tranquility.">Emotional Health and Wellbeing</span><span id="Emotional-Health-and-Wellbeing-rating" class='rating'></span></label>
+    <input id="Emotional-Health-and-Wellbeing" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Emotional Health and Wellbeing"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of a growing, curious brain.">Intellectual Health</span><span id="Intellectual-Health-rating" class='rating'></span></label>
+    <input id="Intellectual-Health" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Intellectual Health"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Development of the internal and external skills, thinking, and actions that attract people, work, friends, and what you want in life.">Attractiveness</span><span id="Attractiveness-rating" class='rating'></span></label>
+    <input id="Attractiveness" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Attractiveness"/>
+
+    <label><span data-tooltip aria-haspopup="true" class="has-tip tip-top round" title="Developing, advancing and living the connection to soul/heart.">Soul</span><span id="Soul-rating" class='rating'></span></label>
+    <input id="Soul" type="integer" data-slider="true" data-slider-range="1,10" data-slider-step="1" data-slider-snap="true" data-label="Soul"/>
+
+    <input type="button" class='button small' value="Submit" onclick="processResults()"/>
   </form>
 
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/vendor/modernizr.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js'></script>
+
   <script>
+
+    // $(document).foundation();
 
     var dataKinds  = []
     var dataLabels = []
@@ -217,7 +298,9 @@
     for (var i = 0; i < dataKinds.length; i++) {
       var elId = "#" + dataKinds[i];
       $(elId).bind("slider:changed", function (event, data) {
-        pos = dataKinds.indexOf($(this).attr('id'));
+        var thisId = $(this).attr('id')
+        $('#' + thisId + '-rating').text(data.value);
+        pos = dataKinds.indexOf(thisId);
         mavChart.datasets[0].points[pos].value = data.value;
         currentData[pos] = data.value;
         mavChart.update();
@@ -230,15 +313,17 @@
     }
 
     function processResults(){
-      var responsesParamString = ""
+      var responsesParamString = "";
+      var formattedScore = "";
 
       for (var i = 0; i < dataKinds.length; i++) {
+        formattedScore = formattedScore + dataLabels[i] + ":%20" + currentData[i] + "%0D%0A"
         responsesParamString = responsesParamString + dataKinds[i] + "=" + currentData[i] + "&"
       }
 
       queryUrl = getBaseURL() + "catalyst?" + responsesParamString + 'surveyLabel' + "=" + new Date().toISOString()
 
-      alert(queryUrl);
+      window.location.href = "mailto:dianecarroll@me.com?subject=My%20Catalyzt%20Score&body=" + formattedScore + "%0D%0A%0D%0ALink:%20" + queryUrl;
     };
 
   </script>
